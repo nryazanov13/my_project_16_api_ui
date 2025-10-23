@@ -23,7 +23,7 @@ public class TestBase {
 
     static CredentialsConfig config = ConfigFactory.create(CredentialsConfig.class);
 
-    protected AuthorizationApi authorizationApi = new AuthorizationApi();
+    public static AuthorizationApi authorizationApi = new AuthorizationApi(); // ← ДОБАВЬТЕ static
     protected BooksApi booksApi = new BooksApi();
 
     protected static final String USERNAME = "test111";
