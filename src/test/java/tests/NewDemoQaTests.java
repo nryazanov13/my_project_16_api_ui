@@ -20,7 +20,7 @@ public class NewDemoQaTests extends TestBase {
 
     @Test
     @WithLogin
-    @DisplayName("Проверка добавления книги в прояиль, ТЕСТ НА УДАЛЕНИЕ СЛЕДУЮЩИЙ")
+    @DisplayName("Проверка добавления книги в профиль, ТЕСТ НА УДАЛЕНИЕ СЛЕДУЮЩИЙ")
     void addOneBookToTheCollectionTest() {
         step("Авторизуемся и настраиваем куки", () -> {
             loginUser();
@@ -41,7 +41,7 @@ public class NewDemoQaTests extends TestBase {
     }
 
     @Test
-    @WithLogin
+    //@WithLogin
     @DisplayName("Проверка удаления книги из профиля")
     void deleteBookFromProfileTest() {
         step("Авторизуемся и настраиваем куки", () -> {

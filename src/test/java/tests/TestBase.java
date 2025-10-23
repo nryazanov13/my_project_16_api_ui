@@ -45,6 +45,8 @@ public class TestBase {
         Configuration.browserSize = getProperty("browserSize", "1920x1080");
 
         Configuration.baseUrl = "https://demoqa.com";
+        RestAssured.baseURI = "https://demoqa.com";
+
         Configuration.pageLoadStrategy = "eager";
 
         String remoteHost = System.getProperty("remoteHost");
@@ -59,7 +61,6 @@ public class TestBase {
                     "enableVideo", true
             ));
             Configuration.browserCapabilities = capabilities;
-            RestAssured.baseURI = System.getProperty("baseUrl", "https://demoqa.com");
         }
     }
 
