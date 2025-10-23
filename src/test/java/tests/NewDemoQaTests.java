@@ -31,7 +31,7 @@ public class NewDemoQaTests extends TestBase {
             booksApi.addBook(userResponse, booksList);
         });
 
-        step("Проверяем отображение книги в профиле", () -> {
+        step("Проверяем отображение книги в профиле через UI", () -> {
             new ProfilePage()
                     .openPage()
                     .checkBookIsVisible(BOOK_TITLE);
