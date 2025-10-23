@@ -53,4 +53,8 @@ tasks.withType(Test) {
 test {
     useJUnitPlatform()
     systemProperties(System.getProperties())
+
+    useJUnitPlatform {
+        includeTags "new"
+    }
 }

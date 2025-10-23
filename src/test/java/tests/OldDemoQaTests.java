@@ -1,6 +1,7 @@
 package tests;
 
 import models.BookModel;
+import org.junit.jupiter.api.Tag;
 import org.openqa.selenium.Cookie;
 import io.restassured.response.Response;
 import models.UserLoginModel;
@@ -16,6 +17,7 @@ import static java.lang.String.format;
 import static specs.RequestSpecs.baseRequestSpec;
 import static specs.ResponseSpecs.responseSpec;
 
+@Tag("old")
 public class OldDemoQaTests extends TestBase{
 
     UserLoginModel user = new UserLoginModel("test111", "Test1234567!");

@@ -3,6 +3,7 @@ package tests;
 import helpers.extensions.WithLogin;
 import models.*;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.ProfilePage;
 
@@ -11,6 +12,7 @@ import java.util.List;
 import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Tag("new")
 public class NewDemoQaTests extends TestBase {
 
     private static final String BOOK_ISBN = "9781449325862";
