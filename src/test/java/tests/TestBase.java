@@ -8,6 +8,7 @@ import com.codeborne.selenide.logevents.SelenideLogger;
 import helpers.Attach;
 import helpers.CredentialsConfig;
 import io.qameta.allure.selenide.AllureSelenide;
+import io.restassured.RestAssured;
 import models.UserLoginModel;
 import models.UserResponseModel;
 import org.aeonbits.owner.ConfigFactory;
@@ -58,6 +59,7 @@ public class TestBase {
                     "enableVideo", true
             ));
             Configuration.browserCapabilities = capabilities;
+            RestAssured.baseURI = System.getProperty("baseUrl", "https://demoqa.com");
         }
     }
 
