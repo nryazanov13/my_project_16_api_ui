@@ -8,11 +8,10 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class ProfilePage {
 
-    // Локаторы элементов
     private final SelenideElement booksTable = $(".ReactTable");
-    private final SelenideElement profileHeader = $(".main-header");
-    private final SelenideElement userNameValue = $("#userName-value");
-    private final SelenideElement deleteButton = $(".delete-record-undefined");
+
+    private final SelenideElement deleteButton = $("#delete-record-undefined");
+    private final SelenideElement okButton = $("#closeSmallModal-ok");
 
     // Методы для взаимодействия со страницей
     public ProfilePage openPage() {
@@ -25,8 +24,14 @@ public class ProfilePage {
         return this;
     }
 
+    public ProfilePage checkBookIsNotVisible(String book) {
+        booksTable.$(byText(book)).shouldNotBe(visible);
+        return this;
+    }
+
     public ProfilePage deleteBook() {
         deleteButton.click();
+        okButton.click();
         return this;
     }
 

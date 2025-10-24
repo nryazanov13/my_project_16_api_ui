@@ -27,6 +27,10 @@ public class NewDemoQaTests extends TestBase {
             setupAuthCookies();
         });
 
+        step("Очищаем коллекцию книг через API", () -> {
+            booksApi.deleteAllBooks(userResponse);
+        });
+
         step("Добавляем книгу в коллекцию через API", () -> {
             BookModel book = new BookModel(BOOK_ISBN);
             BooksRequestModel booksList = new BooksRequestModel(userResponse.getUserId(), List.of(book));
@@ -41,7 +45,7 @@ public class NewDemoQaTests extends TestBase {
     }
 
     @Test
-    //@WithLogin
+    @WithLogin
     @DisplayName("Проверка удаления книги из профиля")
     void deleteBookFromProfileTest() {
         step("Авторизуемся и настраиваем куки", () -> {
@@ -63,12 +67,13 @@ public class NewDemoQaTests extends TestBase {
             new ProfilePage()
                     .openPage()
                     .checkBookIsVisible(BOOK_TITLE)
-                    .deleteBook();
+                    .deleteBook()
+                    .checkBookIsNotVisible(BOOK_TITLE);
         });
 
         step("Проверяем через API, что коллекция пуста", () -> {
-            BooksResponseModel booksResponse = booksApi.getAllBooksFromTheCollection(userResponse);
-            assertTrue(booksResponse.getBooks().isEmpty(),
+            UserAccountResponseModel userAccount = booksApi.getUserProfile(userResponse);
+            assertTrue(userAccount.getBooks().isEmpty(),
                     "После удаления книги коллекция должна быть пустой");
         });
     }

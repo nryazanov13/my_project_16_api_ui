@@ -4,7 +4,7 @@ import models.BookModel;
 import org.junit.jupiter.api.Tag;
 import org.openqa.selenium.Cookie;
 import io.restassured.response.Response;
-import models.UserLoginModel;
+import models.UserModel;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.text;
@@ -18,9 +18,9 @@ import static specs.RequestSpecs.baseRequestSpec;
 import static specs.ResponseSpecs.responseSpec;
 
 @Tag("old")
-public class OldDemoQaTests extends TestBase{
+public class OldDemoQaTests extends TestBase {
 
-    UserLoginModel user = new UserLoginModel("test111", "Test1234567!");
+    UserModel user = new UserModel("test111", "Test1234567!");
     BookModel gitPocketGuideIsbn = new BookModel("9781449325862");
     //String userId = authResponse.path("userId");
     //UserCollection users = new UserCollection(userId, List.of(gitPocketGuideIsbn));
@@ -76,7 +76,7 @@ public class OldDemoQaTests extends TestBase{
 
         String isbn = "9781449325862";
         String bookData = format("{\"userId\":\"%s\",\"collectionOfIsbns\":[{\"isbn\":\"%s\"}]}",
-                authResponse.path("userId") , isbn);
+                authResponse.path("userId"), isbn);
 
         given(baseRequestSpec)
                 .header("Authorization", "Bearer " + authResponse.path("token"))
@@ -97,7 +97,7 @@ public class OldDemoQaTests extends TestBase{
 
     //необходимо сделать первые шаги через апи и затем сделать удаление через иконку и затем сделать проверку в списке , что книг у нас нет
     @Test
-    void deleteOneBookFromTheCollection(){
+    void deleteOneBookFromTheCollection() {
 
         //authorize
 
@@ -125,7 +125,7 @@ public class OldDemoQaTests extends TestBase{
 
         String isbn = "9781449325862";
         String bookData = format("{\"userId\":\"%s\",\"collectionOfIsbns\":[{\"isbn\":\"%s\"}]}",
-                authResponse.path("userId") , isbn);
+                authResponse.path("userId"), isbn);
 
         given(baseRequestSpec)
                 .header("Authorization", "Bearer " + authResponse.path("token"))
@@ -135,7 +135,7 @@ public class OldDemoQaTests extends TestBase{
                 .then()
                 .spec(responseSpec(201));
 
-        BookModel deletedBook = new BookModel(isbn,authResponse.path("userId"));
+        BookModel deletedBook = new BookModel(isbn, authResponse.path("userId"));
 
         //delete book
 

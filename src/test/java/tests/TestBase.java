@@ -9,8 +9,9 @@ import helpers.Attach;
 import helpers.CredentialsConfig;
 import io.qameta.allure.selenide.AllureSelenide;
 import io.restassured.RestAssured;
-import models.UserLoginModel;
-import models.UserResponseModel;
+import lombok.Setter;
+import models.UserModel;
+import models.UserLoginResponseModel;
 import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,10 +30,15 @@ public class TestBase {
     protected static final String USERNAME = "test111";
     protected static final String PASSWORD = "Test1234567!";
 
-    protected UserResponseModel userResponse;
+
+    @Setter
+    protected UserLoginResponseModel userResponse;
+
+    @Setter
+    protected UserModel user;
 
     protected void loginUser() {
-        userResponse = authorizationApi.login(new UserLoginModel(USERNAME, PASSWORD));
+        userResponse = authorizationApi.login(new UserModel(USERNAME, PASSWORD));
     }
 
     protected void setupAuthCookies() {

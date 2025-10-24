@@ -1,57 +1,55 @@
 package api;
 
-import models.BookModel;
-import models.BooksRequestModel;
-import models.BooksResponseModel;
-import models.UserResponseModel;
+import models.*;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
+import static specs.RequestSpecs.baseRequestSpec;
+import static specs.ResponseSpecs.responseSpec;
 
 public class BooksApi {
-    public void deleteAllBooks(UserResponseModel userResponseModel) {
-        given()
+    public void deleteAllBooks(UserLoginResponseModel userResponseModel) {
+        given(baseRequestSpec)
                 .contentType(JSON)
                 .header("Authorization", "Bearer " + userResponseModel.getToken())
                 .queryParam("UserId", userResponseModel.getUserId())
                 .when()
                 .delete("/BookStore/v1/Books")
                 .then()
-                .statusCode(204);
+                .spec(responseSpec(204));
     }
 
-    public void addBook(UserResponseModel userResponseModel, BooksRequestModel booksList) {
-        given()
+    public void addBook(UserLoginResponseModel userResponseModel, BooksRequestModel booksList) {
+        given(baseRequestSpec)
                 .contentType(JSON)
                 .header("Authorization", "Bearer " + userResponseModel.getToken())
                 .body(booksList)
                 .when()
                 .post("/BookStore/v1/Books")
                 .then()
-                .statusCode(201);
+                .spec(responseSpec(201));
     }
 
-    public BooksResponseModel getAllBooksFromTheCollection(UserResponseModel userResponseModel) {
-        return given()
+    public UserAccountResponseModel getUserProfile(UserLoginResponseModel userResponseModel) {
+        return given(baseRequestSpec)
                 .contentType(JSON)
                 .header("Authorization", "Bearer " + userResponseModel.getToken())
                 .when()
-                .get("/BookStore/v1/Books")
+                .get("/Account/v1/User/{userId}", userResponseModel.getUserId()) // ✅ Правильный эндпоинт для профиля пользователя
                 .then()
-                .statusCode(200)
+                .spec(responseSpec(200))  // ✅ Правильный статус для GET
                 .extract()
-                .as(BooksResponseModel.class);
+                .as(UserAccountResponseModel.class);
     }
 
-    public void deleteBook(UserResponseModel userResponseModel, BookModel book) {
-        given()
+    public void deleteBook(UserLoginResponseModel userResponseModel, BookModel book) {
+        given(baseRequestSpec)
                 .contentType(JSON)
                 .header("Authorization", "Bearer " + userResponseModel.getToken())
                 .body(book)
                 .when()
                 .delete("/BookStore/v1/Book")
                 .then()
-                .statusCode(204);
+                .spec(responseSpec(204));
     }
-
 }

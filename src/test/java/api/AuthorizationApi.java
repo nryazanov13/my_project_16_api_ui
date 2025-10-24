@@ -1,7 +1,7 @@
 package api;
 
-import models.UserLoginModel;
-import models.UserResponseModel;
+import models.UserModel;
+import models.UserLoginResponseModel;
 import org.openqa.selenium.Cookie;
 
 import static com.codeborne.selenide.Selenide.open;
@@ -11,7 +11,7 @@ import static io.restassured.http.ContentType.JSON;
 
 public class AuthorizationApi {
 
-    public UserResponseModel login(UserLoginModel user) {
+    public UserLoginResponseModel login(UserModel user) {
         return given()
                 .body(user)
                 .contentType(JSON)
@@ -19,10 +19,10 @@ public class AuthorizationApi {
                 .post("/Account/v1/Login")
                 .then()
                 .statusCode(200)
-                .extract().as(UserResponseModel.class);
+                .extract().as(UserLoginResponseModel.class);
     }
 
-    public void setAuthCookies(UserResponseModel userResponse) {
+    public void setAuthCookies(UserLoginResponseModel userResponse) {
         open("/favicon.ico");
         getWebDriver().manage().addCookie(new Cookie("userID", userResponse.getUserId()));
         getWebDriver().manage().addCookie(new Cookie("token", userResponse.getToken()));

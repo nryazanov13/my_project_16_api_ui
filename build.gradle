@@ -8,7 +8,7 @@ repositories {
     mavenCentral()
 }
 
-def selenideVersion = "6.15.0",
+def selenideVersion = "7.11.0",
     restAssuredVersion = "5.5.0",
     allureVersion = "2.19.0",
     junitVersion = "5.9.3",
