@@ -9,7 +9,6 @@ import static com.codeborne.selenide.Selenide.*;
 public class ProfilePage {
 
     private final SelenideElement booksTable = $(".ReactTable");
-
     private final SelenideElement deleteButton = $("#delete-record-undefined");
     private final SelenideElement okButton = $("#closeSmallModal-ok");
 

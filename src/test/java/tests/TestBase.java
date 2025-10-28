@@ -30,7 +30,6 @@ public class TestBase {
     protected static final String USERNAME = "test111";
     protected static final String PASSWORD = "Test1234567!";
 
-
     @Setter
     protected UserLoginResponseModel userResponse;
 
