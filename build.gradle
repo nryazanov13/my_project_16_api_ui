@@ -53,8 +53,16 @@ tasks.withType(Test) {
 test {
     useJUnitPlatform()
     systemProperties(System.getProperties())
+}
 
+tasks.register('newTests', Test) {
     useJUnitPlatform {
-        includeTags "new"
+        includeTags("new")
+    }
+}
+
+tasks.register('oldTests', Test) {
+    useJUnitPlatform {
+        includeTags("old")
     }
 }
