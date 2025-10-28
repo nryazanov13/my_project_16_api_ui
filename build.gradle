@@ -55,13 +55,13 @@ test {
     systemProperties(System.getProperties())
 }
 
-tasks.register('newTests', Test) {
+task newTests(type: Test) {
     useJUnitPlatform {
         includeTags("new")
     }
 }
 
-tasks.register('oldTests', Test) {
+task oldTests(type: Test) {
     useJUnitPlatform {
         includeTags("old")
     }
