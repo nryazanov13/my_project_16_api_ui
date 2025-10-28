@@ -61,12 +61,14 @@ tasks.withType(Test) {
 
 // Конкретные задачи ТОЛЬКО с их специфичной конфигурацией
 tasks.register('newTests', Test) {
+    systemProperties(System.getProperties())
     useJUnitPlatform {
         includeTags("new")
     }
 }
 
 tasks.register('oldTests', Test) {
+    systemProperties(System.getProperties())
     useJUnitPlatform {
         includeTags("old")
     }
