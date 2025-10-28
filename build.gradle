@@ -8,7 +8,7 @@ repositories {
     mavenCentral()
 }
 
-def selenideVersion = "7.10.0",
+def selenideVersion = "7.11.0",
     restAssuredVersion = "5.5.0",
     allureVersion = "2.19.0",
     junitVersion = "5.9.3",
@@ -19,11 +19,11 @@ allure {
     report {
         version.set("2.19.0")
     }
-    adapter { // отвечает за появление папочки build/allure-results
-        aspectjWeaver.set(true) //обработка аннотации @Step
+    adapter {
+        aspectjWeaver.set(true)
         frameworks {
-            junit5 { //название фреймворка
-                adapterVersion.set("2.19.0") //версия интеграции фреймворка и Allure
+            junit5 {
+                adapterVersion.set("2.19.0")
             }
         }
     }
@@ -46,23 +46,33 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
+// ОБЩАЯ конфигурация для ВСЕХ тестов
 tasks.withType(Test) {
     systemProperty "file.encoding", "UTF-8"
-}
-
-test {
-    useJUnitPlatform()
     systemProperties(System.getProperties())
+
+    testLogging {
+        lifecycle {
+            events "started", "skipped", "failed", "standard_error", "standard_out"
+            exceptionFormat "short"
+        }
+    }
 }
 
-task newTests(type: Test) {
+// Конкретные задачи ТОЛЬКО с их специфичной конфигурацией
+tasks.register('newTests', Test) {
     useJUnitPlatform {
         includeTags("new")
     }
 }
 
-task oldTests(type: Test) {
+tasks.register('oldTests', Test) {
     useJUnitPlatform {
         includeTags("old")
     }
+}
+
+// Основная задача test
+test {
+    useJUnitPlatform()
 }
