@@ -8,7 +8,7 @@ repositories {
     mavenCentral()
 }
 
-def selenideVersion = "7.0.0",
+def selenideVersion = "7.1.0",
     restAssuredVersion = "5.5.0",
     allureVersion = "2.21.0",
     junitVersion = "5.10.0",
@@ -46,35 +46,19 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-// ОБЩАЯ конфигурация для ВСЕХ тестов
-tasks.withType(Test) {
-    systemProperty "file.encoding", "UTF-8"
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
     systemProperties(System.getProperties())
 
     testLogging {
-        lifecycle {
-            events "started", "skipped", "failed", "standard_error", "standard_out"
-            exceptionFormat "short"
-        }
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+        exceptionFormat "full"
     }
 }
 
-// Конкретные задачи ТОЛЬКО с их специфичной конфигурацией
-tasks.register('newTests', Test) {
-    systemProperties(System.getProperties())
+tasks.register("newTests", Test) {
+
     useJUnitPlatform {
         includeTags("new")
     }
-}
-
-tasks.register('oldTests', Test) {
-    systemProperties(System.getProperties())
-    useJUnitPlatform {
-        includeTags("old")
-    }
-}
-
-// Основная задача test
-test {
-    useJUnitPlatform()
 }

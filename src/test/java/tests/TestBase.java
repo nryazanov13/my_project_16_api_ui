@@ -24,11 +24,11 @@ public class TestBase {
 
     static CredentialsConfig config = ConfigFactory.create(CredentialsConfig.class);
 
-    public static AuthorizationApi authorizationApi = new AuthorizationApi(); // ← ДОБАВЬТЕ static
+    public static AuthorizationApi authorizationApi = new AuthorizationApi();
     protected BooksApi booksApi = new BooksApi();
 
-    protected static final String USERNAME = "test111";
-    protected static final String PASSWORD = "Test1234567!";
+    protected static final String USERNAME = config.demoqaUserLogin();
+    protected static final String PASSWORD = config.demoqaUserPassword();
 
     @Setter
     protected UserLoginResponseModel userResponse;
@@ -56,8 +56,8 @@ public class TestBase {
 
         String remoteHost = System.getProperty("remoteHost");
         if (remoteHost != null && !remoteHost.isEmpty()) {
-            String login = config.login();
-            String password = config.password();
+            String login = config.selenoidLogin();
+            String password = config.selenoidPassword();
             Configuration.remote = String.format("https://%s:%s@%s/wd/hub", login, password, remoteHost);
 
             DesiredCapabilities capabilities = new DesiredCapabilities();
