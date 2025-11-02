@@ -2,7 +2,7 @@ package helpers;
 
 import org.aeonbits.owner.Config;
 
-@Config.Sources("classpath:config/webtest-${webtest.env:local}.properties")
+@Config.Sources("classpath:config/webtest-${env}.properties")
 public interface WebTestConfig extends Config {
 
     @Key("browser.name")
@@ -13,9 +13,9 @@ public interface WebTestConfig extends Config {
     @DefaultValue("latest")
     String browserVersion();
 
-    @Key("run.remote")
+    @Key("remote")
     @DefaultValue("false")
-    boolean runRemote();
+    boolean isRemote();
 
     @Key("remote.host")
     @DefaultValue("selenoid.autotests.cloud")

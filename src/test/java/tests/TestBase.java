@@ -48,7 +48,7 @@ public class TestBase {
 
     @BeforeAll
     static void setAll() {
-        // ГИБРИДНЫЙ ПОДХОД: конфиг + системные переменные
+        // ГИБРИДНЫЙ ПОДХОД: системные переменные имеют приоритет над конфигом
         Configuration.browser = getProperty("browser", webTestConfig.browserName());
         Configuration.browserVersion = getProperty("browserVersion", webTestConfig.browserVersion());
         Configuration.browserSize = getProperty("browserSize", webTestConfig.browserSize());
@@ -59,25 +59,17 @@ public class TestBase {
         Configuration.pageLoadStrategy = "eager";
         Configuration.pageLoadTimeout = webTestConfig.pageLoadTimeout() * 1000L;
 
-        // ОДНА ПЕРЕМЕННАЯ ДЛЯ ПЕРЕКЛЮЧЕНИЯ + поддержка Jenkins
-        String remoteHost = System.getProperty("remoteHost");
-        boolean isRemote = webTestConfig.runRemote() || (remoteHost != null && !remoteHost.isEmpty());
-
-        if (isRemote) {
-            setupRemoteDriver(remoteHost);
+        if (webTestConfig.isRemote()) {
+            setupRemoteDriver();
         } else {
             System.out.println("💻 Локальный запуск");
         }
     }
 
-    private static void setupRemoteDriver(String jenkinsRemoteHost) {
+    private static void setupRemoteDriver() {
         String login = credentialsConfig.selenoidLogin();
         String password = credentialsConfig.selenoidPassword();
-
-        // Jenkins remoteHost -> конфиг remoteHost
-        String remoteHost = (jenkinsRemoteHost != null && !jenkinsRemoteHost.isEmpty())
-                ? jenkinsRemoteHost
-                : webTestConfig.remoteHost();
+        String remoteHost = webTestConfig.remoteHost();
 
         Configuration.remote = String.format("https://%s:%s@%s/wd/hub", login, password, remoteHost);
 
@@ -102,10 +94,8 @@ public class TestBase {
         Attach.pageSource();
         Attach.browserConsoleLogs();
 
-        // Видео для удаленного запуска
-        String remoteHost = System.getProperty("remoteHost");
-        boolean isRemote = webTestConfig.runRemote() || (remoteHost != null && !remoteHost.isEmpty());
-        if (isRemote && webTestConfig.enableVideo()) {
+        // ✅ Видео только для удаленного запуска
+        if ("remote".equals(System.getProperty("env")) && webTestConfig.enableVideo()) {
             Attach.addVideo();
         }
 
