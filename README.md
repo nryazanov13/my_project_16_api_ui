@@ -1,7 +1,7 @@
 ## <a href="https://demoqa.com/"><img alt="DemoQa" height="52" src="images/logo/logo.jpg" width="134"/></a>
 # Проект по автоматизации тестирования для проекта [DemoQa](https://demoqa.com/)
 
-* [Репозиторий с проектом](https://github.com/nryazanov13/my_project_16_api_ui/tree/configuration.README.md)
+* [Репозиторий с проектом](https://github.com/nryazanov13/my_project_16_api_ui/tree/configuration)
 
 ## **Содержание:**
 ____
@@ -16,9 +16,6 @@ ____
 
 * <a href="#allure">Allure отчет</a>
 
-* <a href="#telegram">Уведомление в Telegram при помощи бота</a>
-
-* <a href="#video">Примеры видео выполнения тестов на Selenoid</a>
 ____
 <a id="tools"></a>
 ## <a name="Технологии и инструменты">**Технологии и инструменты:**</a>
@@ -49,10 +46,10 @@ API и UI тесты
 
 ____
 <a id="jenkins"></a>
-## <img alt="Jenkins" height="25" src="images/logo/Jenkins.svg" width="25"/></a><a name="Сборка"></a>Сборка в [Jenkins](https://jenkins.autotests.cloud/job/037-sandraboticelli-escaperoom-12/)</a>
+## <img alt="Jenkins" height="25" src="images/logo/Jenkins.svg" width="25"/></a><a name="Сборка"></a>Сборка в [Jenkins](https://jenkins.autotests.cloud/job/nryazanov_my_project_16/)</a>
 ____
 <p align="center">  
-<a href="https://jenkins.autotests.cloud/job/my_project_12/"><img src="images/screen/jenkins.png" alt="Jenkins" width="950"/></a>  
+<a href="https://jenkins.autotests.cloud/job/nryazanov_my_project_16/"><img src="images/screen/Jenkins.png" alt="Jenkins" width="950"/></a>  
 </p>
 
 
@@ -106,22 +103,5 @@ ___
 
   <p align="center">  
 <img title="Allure Graphics" src="images/screen/allure_report_2.png" width="850">
-
-<img title="Allure Graphics" src="images/screen/allure_report_3.png" width="850">  
 </p>
 
-____
-<a id="telegram"></a>
-## <img alt="Allure" height="25" src="images/logo/Telegram.svg" width="25"/></a> Уведомление в Telegram при помощи бота
-____
-<p align="center">  
-<img title="Allure Overview Dashboard" src="images/screen/telegram_report.png" width="550">  
-</p>
-
-____
-<a id="video"></a>
-## <img alt="Selenoid" height="25" src="images/logo/Selenoid.svg" width="25"/></a> Пример видео выполнения тестов на Selenoid
-____
-<p align="center">
-<img title="Selenoid Video" src="images/video/video_report.gif" width="550" height="350"  alt="video">   
-</p>
