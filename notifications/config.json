@@ -1,0 +1,17 @@
+{
+  "base": {
+    "project": "Автоматизированные API тесты для DemoQa",
+    "environment": "stage",
+    "comment": "API тесты",
+    "reportLink": "{$BUILD_URL}",
+    "language": "ru",
+    "allureFolder": "allure-report",
+    "enableChart": true,
+    "enableSuitesPublishing": true
+  },
+  "telegram": {
+    "token": "8459322409:AAFmQBeyoxhMC4qxNhNwuwPP2AqKBGnOwFI",
+    "chat": "-1003081201746",
+    "replyTo": ""
+  }
+}

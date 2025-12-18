@@ -2,6 +2,7 @@ package tests;
 
 import api.AuthorizationApi;
 import api.BooksApi;
+import api.AccountApi;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.logevents.SelenideLogger;
@@ -11,6 +12,7 @@ import helpers.WebTestConfig;
 import io.qameta.allure.selenide.AllureSelenide;
 import io.restassured.RestAssured;
 import lombok.Setter;
+import models.BookModel;
 import models.UserModel;
 import models.UserLoginResponseModel;
 import org.aeonbits.owner.ConfigFactory;
@@ -28,9 +30,13 @@ public class TestBase {
 
     public static AuthorizationApi authorizationApi = new AuthorizationApi();
     protected BooksApi booksApi = new BooksApi();
+    protected AccountApi userApi = new AccountApi();
+    protected BookModel book;
 
     protected static final String USERNAME = credentialsConfig.demoqaUserLogin();
     protected static final String PASSWORD = credentialsConfig.demoqaUserPassword();
+
+    public static final UserModel AUTH_DATA = new UserModel(USERNAME, PASSWORD);
 
     @Setter
     protected UserLoginResponseModel userResponse;
@@ -39,7 +45,7 @@ public class TestBase {
     protected UserModel user;
 
     protected void loginUser() {
-        userResponse = authorizationApi.login(new UserModel(USERNAME, PASSWORD));
+        userResponse = authorizationApi.login(AUTH_DATA);
     }
 
     protected void setupAuthCookies() {
