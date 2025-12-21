@@ -1,5 +1,6 @@
 package tests.api;
 
+import helpers.extensions.WithLogin;
 import io.qameta.allure.*;
 import models.BookModel;
 import models.BooksRequestModel;
@@ -7,7 +8,7 @@ import models.UserAccountResponseModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import tests.TestBase;
+import tests.TestBaseApi;
 
 import java.util.List;
 
@@ -20,17 +21,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Severity(SeverityLevel.BLOCKER)
 @Owner("Nikita Ryazanov")
 @Tag("api")
-public class DeleteBookTests extends TestBase {
+public class DeleteBookTests extends TestBaseApi {
     private static final String BOOK_ISBN = "9781449325862";
 
     @Test
+    @WithLogin
     @DisplayName("Проверка удаления книги из профиля пользователя через API")
     void deleteBookFromProfileTest() {
-
-        step("Авторизуемся и настраиваем куки", () -> {
-            loginUser();
-            setupAuthCookies();
-        });
 
         step("Очищаем коллекцию книг через API", () -> {
             booksApi.deleteAllBooks(userResponse);

@@ -1,27 +1,25 @@
 package helpers.extensions;
 
-import models.UserModel;
 import models.UserLoginResponseModel;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import tests.TestBase;
+import tests.TestBaseApiUi;
 
-import static tests.TestBase.authorizationApi;
+import static tests.TestBaseApiUi.AUTH_DATA;
+import static tests.TestBaseApiUi.authorizationApi;
 
 public class LoginExtension implements BeforeEachCallback {
 
     @Override
     public void beforeEach(ExtensionContext context) {
-        // Используем статический authorizationApi из TestBase
-        UserModel user = new UserModel("test111", "Test1234567!");
-        UserLoginResponseModel userResponse = authorizationApi.login(user);
+
+        UserLoginResponseModel userResponse = authorizationApi.login(AUTH_DATA);
 
         if (context.getTestInstance().isPresent()) {
             Object testInstance = context.getTestInstance().get();
-            if (testInstance instanceof TestBase) {
-                TestBase base = (TestBase) testInstance;
+            if (testInstance instanceof TestBaseApiUi) {
+                TestBaseApiUi base = (TestBaseApiUi) testInstance;
                 base.setUserResponse(userResponse);
-                base.setUser(user); //
             }
         }
     }

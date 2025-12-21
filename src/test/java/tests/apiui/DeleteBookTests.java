@@ -9,7 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.ProfilePage;
-import tests.TestBase;
+import tests.TestBaseApiUi;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Severity(SeverityLevel.BLOCKER)
 @Owner("Nikita Ryazanov")
 @Tag("api_ui")
-public class DeleteBookTests extends TestBase {
+public class DeleteBookTests extends TestBaseApiUi {
 
     private static final String BOOK_ISBN = "9781449325862";
     private static final String BOOK_TITLE = "Git Pocket Guide";
@@ -32,7 +32,6 @@ public class DeleteBookTests extends TestBase {
     @DisplayName("Проверка удаления книги из профиля пользователя через UI")
     void deleteBookFromProfileTest() {
         step("Авторизуемся и настраиваем куки", () -> {
-            loginUser();
             setupAuthCookies();
         });
 

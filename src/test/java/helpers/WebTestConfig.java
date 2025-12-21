@@ -10,7 +10,6 @@ public interface WebTestConfig extends Config {
     String browserName();
 
     @Key("browser.version")
-    @DefaultValue("latest")
     String browserVersion();
 
     @Key("remote")

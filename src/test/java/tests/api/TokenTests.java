@@ -7,7 +7,7 @@ import models.GenerateTokenModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import tests.TestBase;
+import tests.TestBaseApi;
 
 import java.time.Year;
 
@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Severity(SeverityLevel.BLOCKER)
 @Owner("Nikita Ryazanov")
 @Tag("api")
-public class TokenTests extends TestBase {
+public class TokenTests extends TestBaseApi {
     String year = Integer.toString(Year.now().getValue());
     AccountApi accountApi = new AccountApi();
 
@@ -32,10 +32,6 @@ public class TokenTests extends TestBase {
     void getTokenTest() {
 
         GenerateTokenModel response = accountApi.generateTokenReturnResponse();
-
-        step("Настраиваем куки", () -> {
-            setupAuthCookies();
-        });
 
         step("Проверяем тело ответа", () -> {
             assertNotNull(response.getToken(), "Проверяем, что значение token не пусто");

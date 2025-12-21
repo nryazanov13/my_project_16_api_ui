@@ -8,7 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.ProfilePage;
-import tests.TestBase;
+import tests.TestBaseApiUi;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import static io.qameta.allure.Allure.step;
 @Severity(SeverityLevel.BLOCKER)
 @Owner("Nikita Ryazanov")
 @Tag("api_ui")
-public class AddBookTests extends TestBase {
+public class AddBookTests extends TestBaseApiUi {
 
     private static final String BOOK_ISBN = "9781449325862";
     private static final String BOOK_TITLE = "Git Pocket Guide";
@@ -30,7 +30,6 @@ public class AddBookTests extends TestBase {
     @DisplayName("Проверка добавленной книги в профиль пользователя через UI")
     void addOneBookToTheCollectionTest() {
         step("Авторизуемся и настраиваем куки", () -> {
-            loginUser();
             setupAuthCookies();
         });
 

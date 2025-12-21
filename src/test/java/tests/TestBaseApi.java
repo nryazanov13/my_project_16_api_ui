@@ -1,30 +1,26 @@
 package tests;
 
+import api.AccountApi;
 import api.AuthorizationApi;
 import api.BooksApi;
-import api.AccountApi;
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.logevents.SelenideLogger;
-import helpers.Attach;
 import helpers.CredentialsConfig;
 import helpers.WebTestConfig;
 import io.qameta.allure.selenide.AllureSelenide;
 import io.restassured.RestAssured;
 import lombok.Setter;
 import models.BookModel;
-import models.UserModel;
 import models.UserLoginResponseModel;
+import models.UserModel;
 import org.aeonbits.owner.ConfigFactory;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.util.Map;
 
-public class TestBase {
-
+public class TestBaseApi {
     static CredentialsConfig credentialsConfig = ConfigFactory.create(CredentialsConfig.class);
     static WebTestConfig webTestConfig = ConfigFactory.create(WebTestConfig.class);
 
@@ -39,18 +35,7 @@ public class TestBase {
     public static final UserModel AUTH_DATA = new UserModel(USERNAME, PASSWORD);
 
     @Setter
-    protected UserLoginResponseModel userResponse;
-
-    @Setter
-    protected UserModel user;
-
-    protected void loginUser() {
-        userResponse = authorizationApi.login(AUTH_DATA);
-    }
-
-    protected void setupAuthCookies() {
-        authorizationApi.setAuthCookies(userResponse);
-    }
+    protected UserLoginResponseModel userResponse = authorizationApi.login(AUTH_DATA);
 
     @BeforeAll
     static void setAll() {
@@ -94,19 +79,6 @@ public class TestBase {
         SelenideLogger.addListener("allure", new AllureSelenide());
     }
 
-    @AfterEach
-    void addAttachments() {
-        Attach.screenshotAs("Last screenshot");
-        Attach.pageSource();
-        Attach.browserConsoleLogs();
-
-        // ✅ Видео только для удаленного запуска
-        if ("remote".equals(System.getProperty("env")) && webTestConfig.enableVideo()) {
-            Attach.addVideo();
-        }
-
-        Selenide.closeWebDriver();
-    }
 
     private static String getProperty(String name, String defaultValue) {
         String property = System.getProperty(name);

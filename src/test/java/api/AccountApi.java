@@ -9,7 +9,7 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static specs.RequestSpecs.baseRequestSpec;
 import static specs.ResponseSpecs.responseSpec;
-import static tests.TestBase.AUTH_DATA;
+import static tests.TestBaseApiUi.AUTH_DATA;
 
 public class AccountApi {
 

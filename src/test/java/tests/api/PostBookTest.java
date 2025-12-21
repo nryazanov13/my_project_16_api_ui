@@ -8,7 +8,7 @@ import models.BooksRequestModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import tests.TestBase;
+import tests.TestBaseApi;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Severity(SeverityLevel.BLOCKER)
 @Owner("Nikita Ryazanov")
 @Tag("api")
-public class PostBookTest extends TestBase {
+public class PostBookTest extends TestBaseApi {
 
     private static final String BOOK_ISBN = "9781449325862";
     private static final String BOOK_TITLE = "Git Pocket Guide";
@@ -30,10 +30,6 @@ public class PostBookTest extends TestBase {
     @WithLogin
     @DisplayName("Проверка добавленной книги в профиль пользователя через API")
     void addOneBookToTheCollectionTest() {
-        step("Авторизуемся и настраиваем куки", () -> {
-            loginUser();
-            setupAuthCookies();
-        });
 
         step("Очищаем коллекцию книг через API", () -> {
             booksApi.deleteAllBooks(userResponse);
