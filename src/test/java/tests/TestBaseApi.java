@@ -9,16 +9,19 @@ import helpers.CredentialsConfig;
 import helpers.WebTestConfig;
 import io.qameta.allure.selenide.AllureSelenide;
 import io.restassured.RestAssured;
+import io.restassured.parsing.Parser;
 import lombok.Setter;
 import models.BookModel;
+import models.UserAccountRequestModel;
 import models.UserLoginResponseModel;
-import models.UserModel;
 import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.util.Map;
+
+import static utils.RandomUtils.getRandomFirstName;
 
 public class TestBaseApi {
     static CredentialsConfig credentialsConfig = ConfigFactory.create(CredentialsConfig.class);
@@ -30,22 +33,40 @@ public class TestBaseApi {
     protected BookModel book;
 
     protected static final String USERNAME = credentialsConfig.demoqaUserLogin();
-    protected static final String PASSWORD = credentialsConfig.demoqaUserPassword();
+    protected static final String RANDOM_USERNAME = getRandomFirstName();
+    protected static final String CORRECT_PASSWORD = credentialsConfig.demoqaCorrectUserPassword();
+    protected static final String INCORRECT_PASSWORD = credentialsConfig.demoqaIncorrectUserPassword();
 
-    public static final UserModel AUTH_DATA = new UserModel(USERNAME, PASSWORD);
+
+    public static final UserAccountRequestModel CORRECT_RANDOM_USERNAME_AUTH_DATA =
+            new UserAccountRequestModel(RANDOM_USERNAME, CORRECT_PASSWORD);
+
+    public static final UserAccountRequestModel STATIC_CORRECT_AUTH_DATA =
+            new UserAccountRequestModel(USERNAME, CORRECT_PASSWORD);
+
+    public static final UserAccountRequestModel INCORRECT_AUTH_DATA =
+            new UserAccountRequestModel(RANDOM_USERNAME, INCORRECT_PASSWORD);
 
     @Setter
-    protected UserLoginResponseModel userResponse = authorizationApi.login(AUTH_DATA);
+    protected UserLoginResponseModel userStaticCorrectResponse =
+            authorizationApi.login(STATIC_CORRECT_AUTH_DATA);
+
+    @Setter
+    protected UserLoginResponseModel userRandomResponse =
+            authorizationApi.login(CORRECT_RANDOM_USERNAME_AUTH_DATA);
 
     @BeforeAll
     static void setAll() {
-        // ГИБРИДНЫЙ ПОДХОД: системные переменные имеют приоритет над конфигом
+
+
+
         Configuration.browser = getProperty("browser", webTestConfig.browserName());
         Configuration.browserVersion = getProperty("browserVersion", webTestConfig.browserVersion());
         Configuration.browserSize = getProperty("browserSize", webTestConfig.browserSize());
 
         Configuration.baseUrl = "https://demoqa.com";
         RestAssured.baseURI = "https://demoqa.com";
+        RestAssured.defaultParser = Parser.JSON;
 
         Configuration.pageLoadStrategy = "eager";
         Configuration.pageLoadTimeout = webTestConfig.pageLoadTimeout() * 1000L;

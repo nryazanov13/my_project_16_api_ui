@@ -12,8 +12,7 @@ import helpers.WebTestConfig;
 import io.qameta.allure.selenide.AllureSelenide;
 import io.restassured.RestAssured;
 import lombok.Setter;
-import models.BookModel;
-import models.UserModel;
+import models.UserAccountRequestModel;
 import models.UserLoginResponseModel;
 import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.AfterEach;
@@ -33,9 +32,9 @@ public class TestBaseApiUi {
     protected AccountApi userApi = new AccountApi();
 
     protected static final String USERNAME = credentialsConfig.demoqaUserLogin();
-    protected static final String PASSWORD = credentialsConfig.demoqaUserPassword();
+    protected static final String PASSWORD = credentialsConfig.demoqaCorrectUserPassword();
 
-    public static final UserModel AUTH_DATA = new UserModel(USERNAME, PASSWORD);
+    public static final UserAccountRequestModel AUTH_DATA = new UserAccountRequestModel(USERNAME, PASSWORD);
 
     @Setter
     protected UserLoginResponseModel userResponse = authorizationApi.login(AUTH_DATA);

@@ -15,5 +15,8 @@ public interface CredentialsConfig extends Config {
     String demoqaUserLogin();
 
     @Key("demoqa.password")
-    String demoqaUserPassword();
+    String demoqaCorrectUserPassword();
+
+    @Key("demoqa.incorrect.password")
+    String demoqaIncorrectUserPassword();
 }

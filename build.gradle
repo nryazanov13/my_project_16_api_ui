@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'io.qameta.allure' version "3.0.0"
-    id "io.freefair.lombok" version "6.0.0-m2"
+    id "io.freefair.lombok" version "9.0.0"
 }
 
 repositories {
@@ -13,7 +13,8 @@ def selenideVersion = "7.1.0",
     allureVersion = "2.30.0",
     junitVersion = "5.10.0",
     slf4jVersion = "2.0.7",
-    ownerVersion = "1.0.10"
+    ownerVersion = "1.0.10",
+    fakerVersion = "1.0.2"
 
 allure {
     report {
@@ -38,7 +39,9 @@ dependencies {
             "io.qameta.allure:allure-rest-assured:$allureVersion",
             "org.junit.jupiter:junit-jupiter:$junitVersion",
             "org.slf4j:slf4j-simple:$slf4jVersion",
-            "org.aeonbits.owner:owner:$ownerVersion"
+            "org.aeonbits.owner:owner:$ownerVersion",
+            "com.github.javafaker:javafaker:$fakerVersion"
+
     )
 }
 

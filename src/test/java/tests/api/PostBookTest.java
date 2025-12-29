@@ -32,13 +32,13 @@ public class PostBookTest extends TestBaseApi {
     void addOneBookToTheCollectionTest() {
 
         step("Очищаем коллекцию книг через API", () -> {
-            booksApi.deleteAllBooks(userResponse);
+            booksApi.deleteAllBooks(userStaticCorrectResponse);
         });
 
         step("Добавляем книгу в коллекцию через API", () -> {
             BookModel book = new BookModel(BOOK_ISBN);
-            BooksRequestModel booksList = new BooksRequestModel(userResponse.getUserId(), List.of(book));
-            booksApi.addBooks(userResponse, booksList);
+            BooksRequestModel booksList = new BooksRequestModel(userStaticCorrectResponse.getUserId(), List.of(book));
+            booksApi.addBooks(userStaticCorrectResponse, booksList);
         });
 
         step("Проверить ISBN книги и название", () -> {

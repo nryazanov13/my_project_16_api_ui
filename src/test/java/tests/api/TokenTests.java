@@ -12,8 +12,6 @@ import tests.TestBaseApi;
 import java.time.Year;
 
 import static io.qameta.allure.Allure.step;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Epic("Account")
@@ -23,7 +21,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @Owner("Nikita Ryazanov")
 @Tag("api")
 public class TokenTests extends TestBaseApi {
-    String year = Integer.toString(Year.now().getValue());
+    String currentYear = String.valueOf(Year.now().getValue());
+    String nextYear = String.valueOf(Year.now().plusYears(1).getValue());
     AccountApi accountApi = new AccountApi();
 
     @Test
@@ -33,7 +32,11 @@ public class TokenTests extends TestBaseApi {
 
         GenerateTokenModel response = accountApi.generateTokenReturnResponse();
 
+        boolean containsYear = response.getExpires().contains(currentYear) ||
+                response.getExpires().contains(nextYear);
+
         step("Проверяем тело ответа", () -> {
+
             assertNotNull(response.getToken(), "Проверяем, что значение token не пусто");
 
             assertEquals("Success", response.getStatus(), "Проверяем значение status");
@@ -41,8 +44,9 @@ public class TokenTests extends TestBaseApi {
             assertEquals("User authorized successfully.", response.getResult(),
                     "Проверяем значение result");
 
-            assertThat("Проверяем, что значение expires содержит текущий год",
-                    response.getExpires(), containsString(year));
+            assertTrue(containsYear,
+                    () -> "expires должен содержать текущий (" + currentYear + ") или следующий (" + nextYear + ") год, а получено: "
+                            + response.getExpires());
         });
     }
 }

@@ -30,21 +30,21 @@ public class DeleteBookTests extends TestBaseApi {
     void deleteBookFromProfileTest() {
 
         step("Очищаем коллекцию книг через API", () -> {
-            booksApi.deleteAllBooks(userResponse);
+            booksApi.deleteAllBooks(userStaticCorrectResponse);
         });
 
         step("Добавляем книгу в коллекцию через API", () -> {
-            book = new BookModel(BOOK_ISBN, userResponse.getUserId());
-            BooksRequestModel booksList = new BooksRequestModel(userResponse.getUserId(), List.of(book));
-            booksApi.addBooks(userResponse, booksList);
+            book = new BookModel(BOOK_ISBN, userStaticCorrectResponse.getUserId());
+            BooksRequestModel booksList = new BooksRequestModel(userStaticCorrectResponse.getUserId(), List.of(book));
+            booksApi.addBooks(userStaticCorrectResponse, booksList);
         });
 
         step("Удаляем книгу через API", () -> {
-            booksApi.deleteBook(userResponse, book);
+            booksApi.deleteBook(userStaticCorrectResponse, book);
         });
 
         step("Проверяем через API, что коллекция пуста", () -> {
-            UserAccountResponseModel userAccount = userApi.getUserProfile(userResponse);
+            UserAccountResponseModel userAccount = userApi.getUserProfile(userStaticCorrectResponse);
             assertTrue(userAccount.getBooks().isEmpty(),
                     "После удаления книги - коллекция должна быть пустой");
         });

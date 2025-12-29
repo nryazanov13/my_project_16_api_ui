@@ -1,6 +1,6 @@
 package api;
 
-import models.UserModel;
+import models.UserAccountRequestModel;
 import models.UserLoginResponseModel;
 import org.openqa.selenium.Cookie;
 
@@ -11,7 +11,7 @@ import static io.restassured.http.ContentType.JSON;
 
 public class AuthorizationApi {
 
-    public UserLoginResponseModel login(UserModel user) {
+    public UserLoginResponseModel login(UserAccountRequestModel user) {
         return given()
                 .body(user)
                 .contentType(JSON)
