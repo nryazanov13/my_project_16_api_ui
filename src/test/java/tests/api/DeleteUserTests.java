@@ -1,45 +1,65 @@
 package tests.api;
 
-
 import io.qameta.allure.*;
 import models.*;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import tests.TestBaseApi;
 
 import static io.qameta.allure.Allure.step;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-
 @Epic("Account")
 @Feature("Удаление пользователя")
-@Story("Я как пользователь хочу иметь возможность удалить своего пользователя и увидеть корректный ответ")
+@Story("Я как пользователь хочу иметь возможность удалить своего пользователя")
 @Severity(SeverityLevel.CRITICAL)
 @Owner("Nikita Ryazanov")
 @Tag("api")
 public class DeleteUserTests extends TestBaseApi {
 
     @Test
-    @DisplayName("Успешное удаление только что созданного пользователя")
-    void deleteUser_successfulResponse() {
+    @DisplayName("Успешное удаление пользователя с проверкой кода 204 и ошибки 401 при повторном запросе пользователя")
+    void deleteUser_successful() {
 
-        UserAccountResponseModel created = step(
-                "Отправляем запрос POST /Account/v1/User с рандомным именем и валидным паролем",
-                () -> userApi.createUserWithCorrectUserData(CORRECT_RANDOM_USERNAME_AUTH_DATA)
+        String randomUsername = getRandomUsername();
+        UserAccountRequestModel authData =
+                new UserAccountRequestModel(randomUsername, CORRECT_PASSWORD);
+
+        UserAccountResponseModel createdUser = step(
+                "Создаем нового пользователя",
+                () -> userApi.createUserWithCorrectUserData(authData)
         );
 
-        UserAccountErrorResponseModel deleteResp = step(
-                "Отправляем DELETE /Account/v1/User/{userId} для удаления пользователя по Id",
-                () -> userApi.deleteUserById(userRandomResponse)
+        GenerateTokenModel tokenResponse = step(
+                "Генерируем токен для пользователя",
+                () -> userApi.generateTokenForUser(authData)
         );
 
-        step("Валидируем тело ответа", () -> {
-            assertThat("code должен быть 0 (успешное удаление)",
-                    deleteResp.getCode(), equalTo(0));
+        UserLoginResponseModel userAuth = UserLoginResponseModel.builder()
+                .userId(createdUser.getUserId())
+                .token(tokenResponse.getToken())
+                .build();
 
-            assertThat("message не должен быть пустым",
-                    deleteResp.getMessage(),
-                    allOf(notNullValue(), not(emptyOrNullString())));
+        step("Проверяем существование пользователя", () -> {
+            UserAccountResponseModel profile = userApi.getUserProfile(userAuth);
+            assertThat("Пользователь должен существовать", profile, notNullValue());
+            assertThat("ID должен совпадать",
+                    profile.getUserId(), equalTo(createdUser.getUserId()));
+        });
+
+        step("Удаляем пользователя (ожидаем 204 No Content)", () -> {
+            userApi.deleteUserById(userAuth);
+        });
+
+        step("Проверяем что пользователь удален и тело ответа", () -> {
+            UserAccountErrorResponseModel error = userApi.getUserProfileError(userAuth);
+
+            assertThat("Код ошибки должен быть '1207'",
+                    error.getCode(), equalTo("1207"));
+            assertThat("Сообщение об ошибке должно быть 'User not found!'",
+                    error.getMessage(), equalTo("User not found!"));
         });
     }
 }

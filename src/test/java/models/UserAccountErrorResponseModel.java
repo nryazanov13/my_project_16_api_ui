@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserAccountErrorResponseModel {
-    private Integer code;
+    private String code;
     private String message;
 }

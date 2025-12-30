@@ -10,8 +10,6 @@ import helpers.WebTestConfig;
 import io.qameta.allure.selenide.AllureSelenide;
 import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
-import lombok.Setter;
-import models.BookModel;
 import models.UserAccountRequestModel;
 import models.UserLoginResponseModel;
 import org.aeonbits.owner.ConfigFactory;
@@ -30,36 +28,52 @@ public class TestBaseApi {
     public static AuthorizationApi authorizationApi = new AuthorizationApi();
     protected BooksApi booksApi = new BooksApi();
     protected AccountApi userApi = new AccountApi();
-    protected BookModel book;
 
     protected static final String USERNAME = credentialsConfig.demoqaUserLogin();
-    protected static final String RANDOM_USERNAME = getRandomFirstName();
     protected static final String CORRECT_PASSWORD = credentialsConfig.demoqaCorrectUserPassword();
     protected static final String INCORRECT_PASSWORD = credentialsConfig.demoqaIncorrectUserPassword();
 
+    private UserLoginResponseModel cachedStaticUserResponse;
+    private String currentRandomUsername;
 
-    public static final UserAccountRequestModel CORRECT_RANDOM_USERNAME_AUTH_DATA =
-            new UserAccountRequestModel(RANDOM_USERNAME, CORRECT_PASSWORD);
+    public UserLoginResponseModel getUserStaticCorrectResponse() {
+        if (cachedStaticUserResponse == null) {
+            UserAccountRequestModel authData = getStaticCorrectAuthData();
+            cachedStaticUserResponse = authorizationApi.login(authData);
+            validateAuthResponse(cachedStaticUserResponse, "статического пользователя");
+        }
+        return cachedStaticUserResponse;
+    }
 
-    public static final UserAccountRequestModel STATIC_CORRECT_AUTH_DATA =
-            new UserAccountRequestModel(USERNAME, CORRECT_PASSWORD);
+    public String getRandomUsername() {
+        if (currentRandomUsername == null) {
+            currentRandomUsername = getRandomFirstName();
+        }
+        return currentRandomUsername;
+    }
 
-    public static final UserAccountRequestModel INCORRECT_AUTH_DATA =
-            new UserAccountRequestModel(RANDOM_USERNAME, INCORRECT_PASSWORD);
+    public UserAccountRequestModel getStaticCorrectAuthData() {
+        return new UserAccountRequestModel(USERNAME, CORRECT_PASSWORD);
+    }
 
-    @Setter
-    protected UserLoginResponseModel userStaticCorrectResponse =
-            authorizationApi.login(STATIC_CORRECT_AUTH_DATA);
+    public UserAccountRequestModel getIncorrectAuthData() {
+        return new UserAccountRequestModel(getRandomUsername(), INCORRECT_PASSWORD);
+    }
 
-    @Setter
-    protected UserLoginResponseModel userRandomResponse =
-            authorizationApi.login(CORRECT_RANDOM_USERNAME_AUTH_DATA);
+    private void validateAuthResponse(UserLoginResponseModel response, String userType) {
+        if (response == null) {
+            throw new RuntimeException("Ответ авторизации для " + userType + " равен null");
+        }
+        if (response.getToken() == null || response.getToken().isEmpty()) {
+            throw new RuntimeException("Токен для " + userType + " не получен");
+        }
+        if (response.getUserId() == null || response.getUserId().isEmpty()) {
+            throw new RuntimeException("UserID для " + userType + " не получен");
+        }
+    }
 
     @BeforeAll
     static void setAll() {
-
-
-
         Configuration.browser = getProperty("browser", webTestConfig.browserName());
         Configuration.browserVersion = getProperty("browserVersion", webTestConfig.browserVersion());
         Configuration.browserSize = getProperty("browserSize", webTestConfig.browserSize());
@@ -99,7 +113,6 @@ public class TestBaseApi {
     void addAllureListener() {
         SelenideLogger.addListener("allure", new AllureSelenide());
     }
-
 
     private static String getProperty(String name, String defaultValue) {
         String property = System.getProperty(name);

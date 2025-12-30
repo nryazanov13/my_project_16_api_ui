@@ -8,6 +8,7 @@ import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
+import static specs.ResponseSpecs.responseSpec;
 
 public class AuthorizationApi {
 
@@ -18,7 +19,7 @@ public class AuthorizationApi {
                 .when()
                 .post("/Account/v1/Login")
                 .then()
-                .statusCode(200)
+                .spec(responseSpec(200))
                 .extract().as(UserLoginResponseModel.class);
     }
 

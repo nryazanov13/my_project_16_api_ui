@@ -32,21 +32,23 @@ public class CreateUserTests extends TestBaseApi {
     @WithLogin
     @DisplayName("Проверка создания пользователя с корректными данными для авторизации")
     void createUserWithValidCredentials() {
+        String randomUsername = getRandomUsername();
+        UserAccountRequestModel authData =
+                new UserAccountRequestModel(randomUsername, CORRECT_PASSWORD);
 
         UserAccountResponseModel response = step(
                 "Отправляем запрос на создание пользователя с рандомным именем и правильным паролем", () ->
-                        userApi.createUserWithCorrectUserData(CORRECT_RANDOM_USERNAME_AUTH_DATA)
+                        userApi.createUserWithCorrectUserData(authData)
         );
 
         step("Валидируем тело ответа", () -> {
-
             assertThat("userID должен быть заполнен", response.getUserId(), notNullValue());
             assertThat("userID должен иметь UUID‑формат",
                     response.getUserId(),
                     matchesPattern(UUID_REGEX));
             assertThat("username в ответе должен совпадать с отправленным",
                     response.getUsername(),
-                    equalTo(RANDOM_USERNAME));
+                    equalTo(randomUsername));
             assertThat("список книг (books) должен присутствовать",
                     response.getBooks(),
                     notNullValue());
@@ -57,20 +59,17 @@ public class CreateUserTests extends TestBaseApi {
     }
 
     @Test
-    @WithLogin
     @DisplayName("Проверка создания пользователя с НЕ корректными данными для авторизации")
     void createUserWithInValidCredentials() {
-
         UserAccountErrorResponseModel errorResponse = step(
                 "Отправляем запрос на создание пользователя с неправильным паролем", () ->
-                        userApi.createUserWithIncorrectAuthData(INCORRECT_AUTH_DATA)
+                        userApi.createUserWithIncorrectAuthData(getIncorrectAuthData())
         );
 
         step("Валидируем тело ошибки", () -> {
-            assertThat("поле code должно быть равно 1300", errorResponse.getCode(), equalTo(1300));
+            assertThat("поле code должно быть равно 1300", errorResponse.getCode(), equalTo("1300"));
             assertThat("поле message должно соответствовать ожидаемому",
                     errorResponse.getMessage(), equalTo(EXPECTED_ERROR_MESSAGE));
         });
     }
-
 }

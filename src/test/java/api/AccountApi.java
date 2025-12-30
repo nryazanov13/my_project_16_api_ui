@@ -7,7 +7,7 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static specs.RequestSpecs.baseRequestSpec;
 import static specs.ResponseSpecs.responseSpec;
-import static tests.TestBaseApi.STATIC_CORRECT_AUTH_DATA;
+
 
 public class AccountApi {
 
@@ -25,6 +25,19 @@ public class AccountApi {
                 .spec(responseSpec(200))
                 .extract()
                 .as(UserAccountResponseModel.class);
+    }
+
+    @Step("Получение ошибки профиля пользователя (ожидает 401)")
+    public UserAccountErrorResponseModel getUserProfileError(UserLoginResponseModel userResponseModel) {
+        return given(baseRequestSpec)
+                .contentType(JSON)
+                .header("Authorization", "Bearer " + userResponseModel.getToken())
+                .when()
+                .get(USER + "/{userId}", userResponseModel.getUserId())
+                .then()
+                .spec(responseSpec(401)) // Ожидает именно 401
+                .extract()
+                .as(UserAccountErrorResponseModel.class);
     }
 
     @Step("Создание пользователя POST и возвращение ответа")
@@ -53,25 +66,22 @@ public class AccountApi {
                 .as(UserAccountErrorResponseModel.class);
     }
 
-    @Step("Удалить пользователя DELETE /Account/v1/User/{userId} – 200 с телом")
-    public UserAccountErrorResponseModel deleteUserById(UserLoginResponseModel userResponseModel) {
-        return given(baseRequestSpec)
+    @Step("Удалить пользователя DELETE /Account/v1/User/{userId} – 204 No Content")
+    public void deleteUserById(UserLoginResponseModel userResponseModel) {
+        given(baseRequestSpec)
                 .contentType(JSON)
                 .header("Authorization", "Bearer " + userResponseModel.getToken())
                 .when()
                 .delete(USER + "/{userId}", userResponseModel.getUserId())
                 .then()
-                // Swagger говорит, что при успехе статус 200
-                .spec(responseSpec(200))
-                .extract()
-                .as(UserAccountErrorResponseModel.class);
+                .spec(responseSpec(204));
     }
 
-    @Step("Генерация токена POST " + GENERATE_TOKEN + ", Возвращаем response")
-    public GenerateTokenModel generateTokenReturnResponse() {
+    @Step("Генерация токена для пользователя")
+    public GenerateTokenModel generateTokenForUser(UserAccountRequestModel authData) {
         return given(baseRequestSpec)
                 .contentType(JSON)
-                .body(STATIC_CORRECT_AUTH_DATA)
+                .body(authData)
                 .when()
                 .post(GENERATE_TOKEN)
                 .then()

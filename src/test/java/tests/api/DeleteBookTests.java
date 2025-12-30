@@ -5,6 +5,7 @@ import io.qameta.allure.*;
 import models.BookModel;
 import models.BooksRequestModel;
 import models.UserAccountResponseModel;
+import models.UserLoginResponseModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -29,22 +30,24 @@ public class DeleteBookTests extends TestBaseApi {
     @DisplayName("Проверка удаления книги из профиля пользователя через API")
     void deleteBookFromProfileTest() {
 
+        UserLoginResponseModel user = getUserStaticCorrectResponse();
+        BookModel book = new BookModel(BOOK_ISBN, user.getUserId());
+
         step("Очищаем коллекцию книг через API", () -> {
-            booksApi.deleteAllBooks(userStaticCorrectResponse);
+            booksApi.deleteAllBooks(user);
         });
 
         step("Добавляем книгу в коллекцию через API", () -> {
-            book = new BookModel(BOOK_ISBN, userStaticCorrectResponse.getUserId());
-            BooksRequestModel booksList = new BooksRequestModel(userStaticCorrectResponse.getUserId(), List.of(book));
-            booksApi.addBooks(userStaticCorrectResponse, booksList);
+            BooksRequestModel booksList = new BooksRequestModel(user.getUserId(), List.of(book));
+            booksApi.addBooks(user, booksList);
         });
 
         step("Удаляем книгу через API", () -> {
-            booksApi.deleteBook(userStaticCorrectResponse, book);
+            booksApi.deleteBook(user, book);
         });
 
         step("Проверяем через API, что коллекция пуста", () -> {
-            UserAccountResponseModel userAccount = userApi.getUserProfile(userStaticCorrectResponse);
+            UserAccountResponseModel userAccount = userApi.getUserProfile(user);
             assertTrue(userAccount.getBooks().isEmpty(),
                     "После удаления книги - коллекция должна быть пустой");
         });

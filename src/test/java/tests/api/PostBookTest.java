@@ -5,6 +5,7 @@ import io.qameta.allure.*;
 import models.BookDetails;
 import models.BookModel;
 import models.BooksRequestModel;
+import models.UserLoginResponseModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -31,14 +32,16 @@ public class PostBookTest extends TestBaseApi {
     @DisplayName("Проверка добавленной книги в профиль пользователя через API")
     void addOneBookToTheCollectionTest() {
 
+        UserLoginResponseModel user = getUserStaticCorrectResponse();
+
         step("Очищаем коллекцию книг через API", () -> {
-            booksApi.deleteAllBooks(userStaticCorrectResponse);
+            booksApi.deleteAllBooks(user);
         });
 
         step("Добавляем книгу в коллекцию через API", () -> {
             BookModel book = new BookModel(BOOK_ISBN);
-            BooksRequestModel booksList = new BooksRequestModel(userStaticCorrectResponse.getUserId(), List.of(book));
-            booksApi.addBooks(userStaticCorrectResponse, booksList);
+            BooksRequestModel booksList = new BooksRequestModel(user.getUserId(), List.of(book));
+            booksApi.addBooks(user, booksList);
         });
 
         step("Проверить ISBN книги и название", () -> {

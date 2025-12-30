@@ -30,20 +30,16 @@ public class TokenTests extends TestBaseApi {
     @DisplayName("Проверка генерации токена")
     void getTokenTest() {
 
-        GenerateTokenModel response = accountApi.generateTokenReturnResponse();
+        GenerateTokenModel response = accountApi.generateTokenForUser(getStaticCorrectAuthData());
 
         boolean containsYear = response.getExpires().contains(currentYear) ||
                 response.getExpires().contains(nextYear);
 
         step("Проверяем тело ответа", () -> {
-
             assertNotNull(response.getToken(), "Проверяем, что значение token не пусто");
-
             assertEquals("Success", response.getStatus(), "Проверяем значение status");
-
             assertEquals("User authorized successfully.", response.getResult(),
                     "Проверяем значение result");
-
             assertTrue(containsYear,
                     () -> "expires должен содержать текущий (" + currentYear + ") или следующий (" + nextYear + ") год, а получено: "
                             + response.getExpires());
