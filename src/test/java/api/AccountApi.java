@@ -41,7 +41,7 @@ public class AccountApi {
     }
 
     @Step("Создание пользователя POST и возвращение ответа")
-    public UserAccountResponseModel createUserWithCorrectUserData (UserAccountRequestModel userAccountRequestModel) {
+    public UserAccountResponseModel createUserWithCorrectUserData(UserAccountRequestModel userAccountRequestModel) {
         return given(baseRequestSpec)
                 .contentType(JSON)
                 .body(userAccountRequestModel)

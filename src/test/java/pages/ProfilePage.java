@@ -12,7 +12,6 @@ public class ProfilePage {
     private final SelenideElement deleteButton = $("#delete-record-undefined");
     private final SelenideElement okButton = $("#closeSmallModal-ok");
 
-    // Методы для взаимодействия со страницей
     public ProfilePage openPage() {
         open("/profile");
         return this;

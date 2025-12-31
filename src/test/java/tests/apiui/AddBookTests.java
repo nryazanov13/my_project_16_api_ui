@@ -1,6 +1,5 @@
 package tests.apiui;
 
-import helpers.extensions.WithLogin;
 import io.qameta.allure.*;
 import models.BookModel;
 import models.BooksRequestModel;
@@ -26,10 +25,11 @@ public class AddBookTests extends TestBaseApiUi {
     private static final String BOOK_TITLE = "Git Pocket Guide";
 
     @Test
-    @WithLogin
+    //@WithLogin
     @DisplayName("Проверка добавленной книги в профиль пользователя через UI")
     void addOneBookToTheCollectionTest() {
         step("Авторизуемся и настраиваем куки", () -> {
+            loginUser();
             setupAuthCookies();
         });
 

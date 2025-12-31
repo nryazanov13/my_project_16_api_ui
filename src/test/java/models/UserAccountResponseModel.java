@@ -14,7 +14,7 @@ import java.util.List;
 public class UserAccountResponseModel {
 
     @JsonProperty("userId")
-    @JsonAlias({ "userID", "userId" })
+    @JsonAlias({"userID", "userId"})
     private String userId;
     private String username;
     private List<BookDetails> books;
