@@ -1,5 +1,6 @@
 package tests.apiui;
 
+import helpers.extensions.WithLogin;
 import io.qameta.allure.*;
 import models.BookModel;
 import models.BooksRequestModel;
@@ -27,11 +28,10 @@ public class DeleteBookTests extends TestBaseApiUi {
     private static final String BOOK_TITLE = "Git Pocket Guide";
 
     @Test
-    //@WithLogin
+    @WithLogin
     @DisplayName("Проверка удаления книги из профиля пользователя через UI")
     void deleteBookFromProfileTest() {
         step("Авторизуемся и настраиваем куки", () -> {
-            loginUser();
             setupAuthCookies();
         });
 

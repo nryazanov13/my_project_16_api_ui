@@ -39,17 +39,13 @@ public class TestBaseApiUi {
     @Setter
     protected UserLoginResponseModel userResponse;
 
-    protected void loginUser() {
-        userResponse = authorizationApi.login(AUTH_DATA);
-    }
-
     protected void setupAuthCookies() {
         authorizationApi.setAuthCookies(userResponse);
     }
 
     @BeforeAll
     static void setAll() {
-        // ГИБРИДНЫЙ ПОДХОД: системные переменные имеют приоритет над конфигом
+
         Configuration.browser = getProperty("browser", webTestConfig.browserName());
         Configuration.browserVersion = getProperty("browserVersion", webTestConfig.browserVersion());
         Configuration.browserSize = getProperty("browserSize", webTestConfig.browserSize());
@@ -96,7 +92,6 @@ public class TestBaseApiUi {
         Attach.pageSource();
         Attach.browserConsoleLogs();
 
-        // ✅ Видео только для удаленного запуска
         if ("remote".equals(System.getProperty("env")) && webTestConfig.enableVideo()) {
             Attach.addVideo();
         }
