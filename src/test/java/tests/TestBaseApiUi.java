@@ -37,7 +37,7 @@ public class TestBaseApiUi {
     public static final UserAccountRequestModel AUTH_DATA = new UserAccountRequestModel(USERNAME, PASSWORD);
 
     @Setter
-    protected UserLoginResponseModel userResponse = authorizationApi.login(AUTH_DATA);
+    protected UserLoginResponseModel userResponse;
 
     protected void setupAuthCookies() {
         authorizationApi.setAuthCookies(userResponse);
